@@ -1,0 +1,22 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: user-service
+
+jwt:
+  secret: UserServiceJWTSecretKeyForDemoAndTesting12345678
+  expiration-ms: 86400000
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
