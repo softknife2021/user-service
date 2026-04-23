@@ -18,13 +18,16 @@ public class UserService {
         // Seed data matching WireMock stubs
         users.put(1L, User.builder().id(1L).username("admin").email("admin@example.com")
                 .password("admin123").role("ADMIN").active(true)
-                .createdAt(LocalDateTime.of(2024, 1, 15, 10, 30)).build());
+                .createdAt(LocalDateTime.of(2024, 1, 15, 10, 30))
+                .updatedAt(LocalDateTime.of(2024, 2, 22, 8, 0)).build());
         users.put(2L, User.builder().id(2L).username("john.doe").email("john.doe@example.com")
                 .password("password123").role("USER").active(true)
-                .createdAt(LocalDateTime.of(2024, 2, 20, 14, 45)).build());
+                .createdAt(LocalDateTime.of(2024, 2, 20, 14, 45))
+                .updatedAt(LocalDateTime.of(2024, 2, 22, 8, 0)).build());
         users.put(3L, User.builder().id(3L).username("jane.smith").email("jane.smith@example.com")
                 .password("password123").role("USER").active(false)
-                .createdAt(LocalDateTime.of(2024, 3, 10, 9, 15)).build());
+                .createdAt(LocalDateTime.of(2024, 3, 10, 9, 15))
+                .updatedAt(LocalDateTime.of(2024, 3, 10, 9, 15)).build());
     }
 
     public List<User> findAll() {
@@ -58,6 +61,7 @@ public class UserService {
         if (updated.getEmail() != null) existing.setEmail(updated.getEmail());
         if (updated.getRole() != null) existing.setRole(updated.getRole());
         existing.setActive(updated.isActive());
+        existing.setUpdatedAt(LocalDateTime.now());
 
         return Optional.of(existing);
     }
