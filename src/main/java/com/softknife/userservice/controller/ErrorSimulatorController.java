@@ -1,6 +1,7 @@
 package com.softknife.userservice.controller;
 
 import com.softknife.userservice.service.ErrorSimulatorService;
+import com.softknife.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class ErrorSimulatorController {
 
     private final ErrorSimulatorService errorService;
+    private final UserService userService;
 
     @GetMapping("/null-pointer")
     public ResponseEntity<?> nullPointer() {
@@ -79,5 +81,21 @@ public class ErrorSimulatorController {
     public ResponseEntity<?> mixedErrors() {
         String result = errorService.processWithMultipleErrors();
         return ResponseEntity.ok(Map.of("result", result));
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<?> resetData() {
+        userService.reset();
+        log.info("User data reset to seed state");
+        return ResponseEntity.ok(Map.of("status", "reset", "message", "User data reset to 3 seed users"));
+    }
+
+    /**
+     * Auto-cleanup every hour — reset data to prevent accumulation from tests.
+     */
+    @org.springframework.scheduling.annotation.Scheduled(fixedRate = 3600000)
+    public void scheduledReset() {
+        userService.reset();
+        log.info("Scheduled hourly data reset completed");
     }
 }
